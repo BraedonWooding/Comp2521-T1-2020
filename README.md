@@ -1,6 +1,6 @@
 # Comp2521 T3
 
-Click [this](https://braedonwooding.github.io/Comp2521-19T3/#/) to go to all the tutorial slides
+Click [this](https://braedonwooding.github.io/Comp2521-T1-2020/#/) to go to all the tutorial slides
 
 Comp 2521 Resources / Tutorials
 
