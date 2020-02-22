@@ -132,8 +132,8 @@ calls = {
   "floor": ((val) => { return {"value": Math.floor(val.value)}; }),
   "ceil": ((val) => { return {"value": Math.floor(val.value)}; }),
   "abs": ((val) => { return {"value": Math.abs(val.value)}; } ),
-  "sort": ((val) => { val.value.sort((a, b) => a.value - b.value); })
-  "init": ((len) => { return {"value": Array.from({length: len.value}, () => {return {"value": 0};})}; })
+  "sort": ((val) => { val.value.sort((a, b) => a.value - b.value); }),
+  "init": ((len) => { return {"value": Array.from({length: len.value}, () => {return {"value": 0};})}; }),
 }
 
 function parseCall(tokens, ast) {
