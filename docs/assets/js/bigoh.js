@@ -794,7 +794,7 @@ function run() {
   });
 
   let max = Math.max.apply(Math, general.map(elem => elem.results).reduce((a, b) => a.concat(b)));
-  let closestIndex = sumOfDifferences.indexOf(Math.min.apply(Math, sumOfDifferences));
+  let closestIndex = sumOfDifferences.indexOf(Math.min.apply(Math, sumOfDifferences)) + 1;
   let closest = general[closestIndex];
 
   console.log("Closest is " + closest.name);
