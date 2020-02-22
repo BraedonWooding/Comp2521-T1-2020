@@ -105,18 +105,20 @@ endfor
 </div>
 </div>
 <script>
-    define('ace/mode/custom', [], (require, exports, module) => {
+    define('ace/mode/custom', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/custom_highlight_rules', 'ace/mode/text_highlight_rules'], (require, exports, module) => {
         var oop = require("ace/lib/oop");
         var textMode = require("ace/lib/text").Mode;
         var tokenizer = require("ace/tokenizer").Tokenizer;
         var customHighlightRules = require("ace/mode/custom_highlight_rules").CustomHighlightRules;
         var mode = () => this.HighlightRules = customHighlightRules;
         oop.inherits(mode, textMode);
-        (() => {}).call(mode.prototype);
+        (() => {
+            this.$id = 'ace/mode/custom';
+        }).call(mode.prototype);
         exports.Mode = mode;
     });
 
-    define('ace/mode/custom_highlight_rules', [], function(require, exports, module) {
+    define('ace/mode/custom_highlight_rules', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
         var oop = require("ace/lib/oop");
         var textHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
         var customHighlightRules = () => {
