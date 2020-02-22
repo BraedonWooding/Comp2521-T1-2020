@@ -119,7 +119,7 @@ function addIf(tokens, ast) {
 }
 
 keywords = ["endfor", "else", "elif", "endif", "endwhile", "done", "next", "end", "for", "while", "if", "then"]
-valid_calls = ["print", "pop", "enqueue", "push", "dequeue", "rand", "empty", "length", "floor", "ceil", "abs", "sort"]
+valid_calls = ["print", "pop", "enqueue", "push", "dequeue", "rand", "empty", "length", "floor", "ceil", "abs", "sort", "init"]
 calls = {
   "print": ((val) => {;}),
   "pop": ((from) => { return from.value.pop(); }),
@@ -133,6 +133,7 @@ calls = {
   "ceil": ((val) => { return {"value": Math.floor(val.value)}; }),
   "abs": ((val) => { return {"value": Math.abs(val.value)}; } ),
   "sort": ((val) => { val.value.sort((a, b) => a.value - b.value); })
+  "init": ((len) => { return {"value": Array.from({length: len.value}, () => {return 0;})}; })
 }
 
 function parseCall(tokens, ast) {
@@ -648,7 +649,7 @@ end while
     }
     case 4: {
       document.getElementById("inputScript").value =
-`A = rand n
+`A = init n
 for all i = 2..n - 1 do
     A[i] = 1
 endfor
