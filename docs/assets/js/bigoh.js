@@ -785,23 +785,16 @@ function run() {
     });
   }
 
-  // eval at 10000 this should be not slow enough
-  let eval_high = general.map(elem => { return { "name": elem.name, "res": elem.func(1000)} } );
-  let max = Math.max.apply(Math, [].concat.apply([], general.map(elem => elem.results)))
-  console.log(max);
-  let closest = 0;
-
-  let eval_next_high = general.map(elem => { return { "name": elem.name, "res": elem.func(50)} } );
-  if (eval_high[0].res == eval_next_high[0].res) {
-    closest = eval_high[eval_high.length - 1]
-  } else {
-    let goal = eval_high[0].res;
-    closest = eval_high.slice(1).reduce((prev, cur) => {
-      prev_v = prev.res;
-      cur_v = cur.res;
-      return Math.abs(cur_v - goal) < Math.abs(prev_v - goal) ? cur : prev;
-    })
+  let sumOfDifferences = general.slice(1).map(elem => {
+    let sum = 0;
+    for (i = 0; i < elem.results.length; i++) {
+        sum += Math.abs(elem.results[i] - general[i]);
+    }
+    return sum;
   }
+
+  let closestIndex = sumOfDifferences.indexOf(Math.min.apply(Math, sumOfDifferences));
+  let closest = general[closestIndex];
 
   console.log("Closest is " + closest.name);
   document.getElementById("BigO").innerHTML = "I think the complexity is " + closest.name;
