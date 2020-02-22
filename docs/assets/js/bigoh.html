@@ -113,7 +113,7 @@ endfor
         var customHighlightRules = require("ace/mode/custom_highlight_rules").CustomHighlightRules;
         var Mode = () => this.HighlightRules = customHighlightRules;
         oop.inherits(Mode, textMode);
-        (() => {
+        (function() {
             this.$id = 'ace/mode/custom';
         }).call(Mode.prototype);
         exports.Mode = Mode;
