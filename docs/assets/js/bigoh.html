@@ -134,11 +134,7 @@ endfor
             }, "text", true);
 
             this.$rules = {
-                "start": [
-                    {
-                        regex: "\\w+\\b",
-                        token: mapper
-                    },
+                "start": [ 
                     {
                         token: 'constant.numeric', // float
                         regex: '[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b'
@@ -158,6 +154,10 @@ endfor
                     {
                         token: 'paren.rparen',
                         regex: '[\\)]'
+                    },
+                    {
+                        regex: "\\w+\\b",
+                        token: mapper
                     },
                 ]
             };
