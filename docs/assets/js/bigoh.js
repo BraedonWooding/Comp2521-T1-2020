@@ -681,7 +681,7 @@ endfor
 }
 
 function run() {
-  text = document.getElementById("inputScript").value;
+  text = editor.getValue();
   res = document.getElementById("result");
   errs = document.getElementById("error");
   errs.innerHTML = "";
