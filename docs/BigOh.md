@@ -6,7 +6,7 @@ It'll try to guess your complexity too, it isn't very good if the complexity is 
 
 > This is actually an interesting sidepoint around non analytical/theoretical solutions it is really hard to prove that the value you got was right!  Since maybe it just was so small (like `log(log(log(n)))`) that you didn't see the growth till you would have given it a much larger number.
 
-[tool](assets/js/bigoh.html ':include :type=iframe width=100% height=100%')
+[tool](assets/js/bigoh.html ':include :type=iframe width=100% height=1000')
 
 ## Documentation on the tool
 
