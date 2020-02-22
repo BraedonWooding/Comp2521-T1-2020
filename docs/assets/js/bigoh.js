@@ -791,7 +791,7 @@ function run() {
         sum += Math.abs(elem.results[i] - general[i]);
     }
     return sum;
-  }
+  });
 
   let closestIndex = sumOfDifferences.indexOf(Math.min.apply(Math, sumOfDifferences));
   let closest = general[closestIndex];
