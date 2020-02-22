@@ -796,8 +796,8 @@ function run() {
   let max = Math.max.apply(Math, general.map(elem => elem.results).reduce((a, b) => a.concat(b)));
   let sortable = sumOfDifferences.map((e, i) => [e, i]);
   sortable.sort((x, y) => x[0] > y[0] ? 1 : x[0] == y[0] ? 0 : -1);
-  let closest = general[sortable[0][1]];
-  let secondClosest = general[sortable[1][1]];
+  let closest = general[sortable[0][1] + 1];
+  let secondClosest = general[sortable[1][1] + 1];
 
   let msg = "I think the complexity is " + closest.name;
   // if the difference between the cases is < 5%
