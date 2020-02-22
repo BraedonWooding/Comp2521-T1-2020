@@ -111,7 +111,7 @@ endfor
         var textMode = require("ace/mode/text").Mode;
         var tokenizer = require("ace/tokenizer").Tokenizer;
         var customHighlightRules = require("ace/mode/custom_highlight_rules").CustomHighlightRules;
-        var Mode = () => this.HighlightRules = customHighlightRules;
+        var Mode = function() { this.HighlightRules = customHighlightRules; };
         oop.inherits(Mode, textMode);
         (function() {
             this.$id = 'ace/mode/custom';
