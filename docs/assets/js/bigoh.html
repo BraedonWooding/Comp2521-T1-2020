@@ -106,7 +106,7 @@ endfor
 </div>
 </div>
 <script>
-    define('ace/mode/custom', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/custom_highlight_rules', 'ace/mode/text_highlight_rules'], (require, exports, module) => {
+    define('ace/mode/custom', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/custom_highlight_rules', 'ace/mode/text_highlight_rules'], function (require, exports, module) {
         var oop = require("ace/lib/oop");
         var textMode = require("ace/mode/text").Mode;
         var tokenizer = require("ace/tokenizer").Tokenizer;
