@@ -77,6 +77,11 @@
     height: 300px;
     position: relative;
   }
+
+  #chart {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 </style>
 
 <p> <button onclick="switchExample(0);"> Example 1 </button> <button onclick="switchExample(1);"> Example 2 </button> <button onclick="switchExample(2);"> Example 3 </button> <button onclick="switchExample(3);"> Example 4 </button> <button onclick="switchExample(4);"> Example 5 (Sieve of Eratosthenes) </button> </p>
@@ -100,11 +105,72 @@ endfor
 </div>
 </div>
 <script>
+    define('ace/mode/custom', [], (require, exports, module) => {
+        var oop = require("ace/lib/oop");
+        var textMode = require("ace/lib/text").Mode;
+        var tokenizer = require("ace/tokenizer").Tokenizer;
+        var customHighlightRules = require("ace/mode/custom_highlight_rules").CustomHighlightRules;
+        var mode = () => this.HighlightRules = customHighlightRules;
+        oop.inherits(mode, textMode);
+        (() => {}).call(mode.prototype);
+        exports.Mode = mode;
+    };
+
+    define('ace/mode/custom_highlight_rules', [], function(require, exports, module) {
+        var oop = require("ace/lib/oop");
+        var textHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
+        var customHighlightRules = () => {
+            var mapper = this.createKeywordMapper({
+                "variable.language": "this",
+                "support.function":
+                    "rand|print|pop|push|empty|length|enqueue|dequeue|init",
+                "constant.language":
+                    "true|false",
+                "keyword":
+                    "if|elif|else|for|endfor|endif|while|endwhile|end|then|do"
+            }, "text", true);
+
+            this.$rules = {
+                "start": [
+                    {
+                        regex: "\\w+\\b",
+                        token: mapper
+                    },
+                    {
+                        token: 'constant.numeric', // float
+                        regex: '[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b'
+                    },
+                    {
+                        token: 'comment',
+                        regex: '(?:#).*$'
+                    },
+                    {
+                        token: 'keyword.operator',
+                        regex: '\\+|\\-|\\/|%|<|>|>=|<=|==|!=|<>|~=|=|\\+=|\\-=|%=|\\/=|\\*|\\*=|\\*\\*|\\*\\*=|!'
+                    },
+                    {
+                        token: 'paren.lparen',
+                        regex: '[\\(]'
+                    },
+                    {
+                        token: 'paren.rparen',
+                        regex: '[\\)]'
+                    },
+                ]
+            };
+            this.normalizeRules();
+        };
+
+        oop.inherits(customHighlightRules, textHighlightRules);
+        exports.CustomHighlightRules = customHighlightRules;
+    };
+
     editor = ace.edit("inputScript");
     editor.setOptions({
         enableBasicAutocomplete: true,
         enableLiveCompletion: true,
     })
+    editor.session.setMode("ace/mode/custom");
 </script>
 <canvas id="chart" width="400" height="150"></canvas>
 
