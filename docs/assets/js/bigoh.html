@@ -122,7 +122,7 @@ endfor
     define('ace/mode/custom_highlight_rules', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
         var oop = require("ace/lib/oop");
         var textHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
-        var customHighlightRules = () => {
+        var customHighlightRules = function() {
             var mapper = this.createKeywordMapper({
                 "variable.language": "this",
                 "support.function":
