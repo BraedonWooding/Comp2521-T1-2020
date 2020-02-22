@@ -116,7 +116,7 @@ endfor
         (() => {
             this.$id = 'ace/mode/custom';
         }).call(Mode.prototype);
-        exports.Mode = mode;
+        exports.Mode = Mode;
     });
 
     define('ace/mode/custom_highlight_rules', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/lib/lang', 'ace/mode/text_highlight_rules'], function(require, exports, module) {
