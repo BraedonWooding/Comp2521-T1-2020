@@ -648,7 +648,27 @@ end while
     }
     case 4: {
       document.getElementById("inputScript").value =
-``;
+`A = rand n
+for all i = 2..n - 1 do
+    A[i] = 1
+endfor
+
+for all i = 2..n - 1 do
+    if A[i] > 0 then
+        j = i
+        while j * i < n do
+            A[i * j] = 0
+            j = j + 1
+        endwhile
+    endif
+endfor
+
+for all i = 2..n - 1 do
+    if A[i] > 0 then
+        print i
+    endif
+endfor
+`;
       break;
     }
     case 5: {
@@ -724,6 +744,14 @@ function run() {
     "name": "O(n log(n))",
     "func": (val => val * Math.log2(val)),
     "color": "Green",
+    "disabled": false,
+    "results": [],
+    "cubic": "monotone"
+  },
+  {
+    "name": "O(n log(log(n)))",
+    "func": (val => val * Math.log2(Math.log2(val))),
+    "color": "Orange",
     "disabled": false,
     "results": [],
     "cubic": "monotone"
