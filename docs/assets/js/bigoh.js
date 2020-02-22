@@ -788,7 +788,7 @@ function run() {
   let sumOfDifferences = general.slice(1).map(elem => {
     let sum = 0;
     for (i = 0; i < elem.results.length; i++) {
-        sum += Math.abs(elem.results[i] - general[i]);
+        sum += Math.abs(elem.results[i] - general[0].results[i]);
     }
     return sum;
   });
