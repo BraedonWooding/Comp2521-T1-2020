@@ -114,7 +114,7 @@ endfor
         oop.inherits(mode, textMode);
         (() => {}).call(mode.prototype);
         exports.Mode = mode;
-    };
+    });
 
     define('ace/mode/custom_highlight_rules', [], function(require, exports, module) {
         var oop = require("ace/lib/oop");
@@ -163,7 +163,7 @@ endfor
 
         oop.inherits(customHighlightRules, textHighlightRules);
         exports.CustomHighlightRules = customHighlightRules;
-    };
+    });
 
     editor = ace.edit("inputScript");
     editor.setOptions({
