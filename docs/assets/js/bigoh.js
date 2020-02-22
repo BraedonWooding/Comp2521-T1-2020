@@ -119,7 +119,7 @@ function addIf(tokens, ast) {
 }
 
 keywords = ["endfor", "else", "elif", "endif", "endwhile", "done", "next", "end", "for", "while", "if", "then"]
-valid_calls = ["print", "pop", "enqueue", "push", "dequeue", "rand", "empty", "length", "floor", "ceil", "abs", "sort", "init"]
+valid_calls = ["print", "pop", "enqueue", "push", "dequeue", "rand", "empty", "length", "floor", "ceil", "abs", "sort", "init", "sqrt"]
 calls = {
   "print": ((val) => {;}),
   "pop": ((from) => { return from.value.pop(); }),
@@ -134,6 +134,7 @@ calls = {
   "abs": ((val) => { return {"value": Math.abs(val.value)}; } ),
   "sort": ((val) => { val.value.sort((a, b) => a.value - b.value); }),
   "init": ((len) => { return {"value": Array.from({length: len.value}, () => {return {"value": 0};})}; }),
+  "sqrt": ((x) => { return {"value": Math.sqrt(x)}; }),
 }
 
 function parseCall(tokens, ast) {
