@@ -794,12 +794,20 @@ function run() {
   });
 
   let max = Math.max.apply(Math, general.map(elem => elem.results).reduce((a, b) => a.concat(b)));
-  let closestIndex = sumOfDifferences.indexOf(Math.min.apply(Math, sumOfDifferences)) + 1;
-  let closest = general[closestIndex];
+  let sortable = sumOfDifferences.map((e, i) => [e, i]);
+  sortable.sort((x, y) => x[0] > y[0] ? 1 : x[0] == y[0] ? 0 : -1);
+  let closest = general[sortable[0][1]];
+  let secondClosest = general[sortable[1][1]];
 
+  let msg = "I think the complexity is " + closest.name;
+  // if the difference between the cases is < 5%
+  // then it's hard to really say it's definitely one of them
+  if (Math.abs(sortable[0][0] - sortable[1][0]) / sortable[1][0] * 100 < 10) {
+    msg += " but it definitely could also be " + secondClosest.name + " it's too close to really tell";
+  }
   console.log("Closest is " + closest.name);
-  document.getElementById("BigO").innerHTML = "I think the complexity is " + closest.name;
-  general.forEach(elem => {elem.disabled = closest.name != elem.name && elem.name != general[0].name});
+  document.getElementById("BigO").innerHTML = msg;
+  general.forEach(elem => {elem.disabled = closest.name != elem.name && secondClosest.name != elem.name && elem.name != general[0].name});
 
   let datasets = general.map(elem => {
     return {
