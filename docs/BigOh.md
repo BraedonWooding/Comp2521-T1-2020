@@ -45,3 +45,4 @@ The following are all the functions supported:
   - i.e. `enqueue 10 Q`
 - `dequeue S` : dequeues value from queue
   - i.e. `x = dequeue Q`
+- `init n` creates a set / array / queue of size n with all values being 0
