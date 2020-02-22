@@ -576,28 +576,28 @@ function runAST(ast) {
 function switchExample(num) {
   switch (num) {
     case 0: {
-      document.getElementById("inputScript").value =
+      editor.setValue(
 `A = rand n
 for all i = n down to 1 do
   for all j = n down to i do
     print A[i] A[j]
   endfor
-endfor`;
+endfor`);
       break;
     }
     case 1: {
-      document.getElementById("inputScript").value =
+      editor.setValue(
 `A = rand n
 currentMax=A[0]
 for all i=1..n-1 do
   if A[i] > currentMax then
     currentMax=A[i]
   end if
-end for`;
+end for`);
       break;
     }
     case 2: {
-      document.getElementById("inputScript").value =
+      editor.setValue(
 `A = rand n
 sort A
 goal = 5
@@ -614,11 +614,11 @@ while lo <= hi do
   else
     lo = m + 1
   end if
-end while`;
+end while`);
       break;
     }
     case 3: {
-      document.getElementById("inputScript").value =
+      editor.setValue(
 `A = rand n, B = rand n, k = rand
 sum = 0, count = 0
 C = rand 0
@@ -645,11 +645,11 @@ while !empty(B) do
     best = count
   end if
 end while
-`;
+`);
       break;
     }
     case 4: {
-      document.getElementById("inputScript").value =
+      editor.setValue(
 `A = init n
 for all i = 2..n - 1 do
     A[i] = 1
@@ -670,12 +670,11 @@ for all i = 2..n - 1 do
         print i
     endif
 endfor
-`;
+`);
       break;
     }
     case 5: {
-      document.getElementById("inputScript").value =
-``;
+      editor.setValue(``);
       break;
     }
   }

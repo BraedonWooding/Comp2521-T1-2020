@@ -93,7 +93,12 @@ endfor
 </div>
 
 <script>
-    var editor = ace.edit("inputScript");
+    editor = ace.edit("inputScript");
+    editor.getEditor().setOptions({
+        enableBasicAutocomplete: true,
+        enableLiveCompletion: true,
+        showGutter: false
+    })
 </script>
 <div class="container">
     <div class="left">
