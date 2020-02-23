@@ -678,6 +678,7 @@ endfor
       break;
     }
   }
+  editor.clearSelection();
 }
 
 function run() {
