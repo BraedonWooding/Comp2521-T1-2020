@@ -1,15 +1,8 @@
-// Too lazy to do this properly, so I just created a random email account;
-// tutorgists@gmail.com, and this token has only gist permissions... so it'll be
-// fine!
-var token = '9f1798b9c1760a0e631671c9089d3e70a0660503';
-
 require('http');
 require('https');
 const Github = require('github-api');
 
-const gh = new Github({
-    "token": token
-});
+const gh = new Github();
 
 function loadUrl(url, callback) {
     var xml = new XMLHttpRequest();
@@ -23,7 +16,7 @@ function loadUrl(url, callback) {
 }
 
 window.gists = {};
-var usr = gh.getUser();
+var usr = gh.getUser('tutorgists');
 usr.listGists((err, gists) => {
     var list = document.getElementById("listOfGists");
     while (list.childNodes.length > 2) {
