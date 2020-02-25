@@ -1,11 +1,86 @@
+// Too lazy to do this properly, so I just created a random email account;
+// tutorgists@gmail.com, and this token has only gist permissions... so it'll be
+// fine!
+var token = '9f1798b9c1760a0e631671c9089d3e70a0660503';
+
+require('http');
+require('https');
+const Github = require('github-api');
+
+const gh = new Github({
+    "token": token
+});
+
+function loadUrl(url, callback) {
+    var xml = new XMLHttpRequest();
+    xml.onreadystatechange = () => {
+        if (xml.readyState == 4 && xml.status == 200) {
+            callback(xml.responseText);
+        }
+    }
+    xml.open("GET", url, true);
+    xml.send(null);
+}
+
+window.gists = {};
+var usr = gh.getUser();
+usr.listGists((err, gists) => {
+    var list = document.getElementById("listOfGists");
+    while (list.childNodes.length > 2) {
+        list.removeChild(list.lastChild);
+    }
+    for (gist of gists) {
+        // this should only have one
+        for (gistfile in gist.files) {
+            let file = gist.files[gistfile];
+            loadUrl(file.raw_url, (response) => {
+                window.gists[file.filename] = response;
+                var opt = document.createElement("option");
+                opt.value = file.filename;
+                opt.text = file.filename;
+                list.appendChild(opt);
+            });
+        }
+    }
+});
+
+window.changeGist = () => {
+    var opt = document.getElementById("listOfGists").value;
+    editor.setValue(window.gists[opt]);
+    editor.clearSelection();
+}
+
+function createGist(name, content) {
+    let gist = gh.getGist();
+    gist.create({
+        "public": true,
+        "description": 'A gist for Big Oh',
+        "files": {
+            [name]: {
+                "content": content
+            }
+        }
+    });
+}
+
+function editGist(name, newName, content) {
+    let gist = gh.getGist();
+    gist.update({
+        "description": 'A gist for Big Oh',
+        "files": {
+            [name]: {
+                "filename": newName,
+                "content": content
+            }
+        }
+    });
+}
+
 var cur = 0;
 var res;
 var errs;
-var chart = null;
+window.chart = null;
 var ctx;
-
-var ast = {};
-var vars = [];
 
 function peek(tokens) {
   skipTill(tokens);
@@ -119,7 +194,7 @@ function addIf(tokens, ast) {
 }
 
 keywords = ["endfor", "else", "elif", "endif", "endwhile", "done", "next", "end", "for", "while", "if", "then"]
-valid_calls = ["print", "pop", "enqueue", "push", "dequeue", "rand", "empty", "length", "floor", "ceil", "abs", "sort", "init", "sqrt"]
+valid_calls = ["print", "pop", "enqueue", "push", "dequeue", "rand", "empty", "length", "floor", "ceil", "abs", "sort", "init", "sqrt", "randrange"]
 calls = {
   "print": ((val) => {;}),
   "pop": ((from) => { return from.value.pop(); }),
@@ -134,7 +209,8 @@ calls = {
   "abs": ((val) => { return {"value": Math.abs(val.value)}; } ),
   "sort": ((val) => { val.value.sort((a, b) => a.value - b.value); }),
   "init": ((len) => { return {"value": Array.from({length: len.value}, () => {return {"value": 0};})}; }),
-  "sqrt": ((x) => { return {"value": Math.sqrt(x)}; }),
+  "sqrt": ((x) => { return {"value": Math.sqrt(x.value)}; }),
+  "randrange": ((low, high) => { return {"value": Math.floor(Math.random() * (high.value - low.value) + low.value)}; }),
 }
 
 function parseCall(tokens, ast) {
@@ -476,7 +552,12 @@ function runAST(ast) {
         iterations += its;
         arg_values.push(res);
       });
-      return [calls[ast.block.name](...arg_values), iterations];
+      if (ast.block.name in calls) {
+        return [calls[ast.block.name](...arg_values), iterations];
+      } else {
+        errs.innerHTML = "Error: unknown call " + ast.block.name;
+        throw new Error();
+      }
     }
     case "Or": {
       let res = false;
@@ -567,138 +648,32 @@ function runAST(ast) {
     }
     case "index": {
       let [index, its] = runAST(ast.block.inner);
-      return [vars[ast.block.lhs].value[index.value], its + 1];
+      return [vars[ast.block.lhs].value[Math.trunc(index.value)], its + 1];
     }
   }
   return [null, 0];
 }
 
-function switchExample(num) {
-  switch (num) {
-    case 0: {
-      editor.setValue(
-`A = rand n
-for all i = n down to 1 do
-  for all j = n down to i do
-    print A[i] A[j]
-  endfor
-endfor`);
-      break;
-    }
-    case 1: {
-      editor.setValue(
-`A = rand n
-currentMax=A[0]
-for all i=1..n-1 do
-  if A[i] > currentMax then
-    currentMax=A[i]
-  end if
-end for`);
-      break;
-    }
-    case 2: {
-      editor.setValue(
-`A = rand n
-sort A
-goal = 5
-lo = 0
-hi = n - 1
-ans = -1
-while lo <= hi do
-  m = floor((hi + lo) / 2)
-  if abs(A[m] - goal) < 0.01 then
-    ans = m
-    lo = hi + 1
-  elif A[m] > goal then
-    hi = m - 1
-  else
-    lo = m + 1
-  end if
-end while`);
-      break;
-    }
-    case 3: {
-      editor.setValue(
-`A = rand n, B = rand n, k = rand
-sum = 0, count = 0
-C = rand 0
-while sum <= k and !empty(A) do
-  v = pop A, push v C
-  sum += v, count += 1
-end while
-
-if sum > k then
-  v = pop C
-  sum -= v, count -= 1
-end if
-best = count
-
-while !empty(B) do
-  v = pop B
-  sum += v, count += 1
-  while sum > k and !empty(C) do
-    v = pop C
-    sum -= v, count -= 1
-  end while
-
-  if sum <= k and count > best then
-    best = count
-  end if
-end while
-`);
-      break;
-    }
-    case 4: {
-      editor.setValue(
-`A = init n
-for all i = 2..n - 1 do
-    A[i] = 1
-endfor
-
-for all i = 2..n - 1 do
-    if A[i] > 0 then
-        j = i
-        while j * i < n do
-            A[i * j] = 0
-            j = j + 1
-        endwhile
-    endif
-endfor
-
-for all i = 2..n - 1 do
-    if A[i] > 0 then
-        print i
-    endif
-endfor
-`);
-      break;
-    }
-    case 5: {
-      editor.setValue(``);
-      break;
-    }
-  }
-  editor.clearSelection();
-}
-
-function run() {
+window.run = () => {
   text = editor.getValue();
   res = document.getElementById("result");
   errs = document.getElementById("error");
   errs.innerHTML = "";
   cur = 0;
-  tokens = text.split("\n").join(";").split(',').join(";")
+  var tokens = text.split("\n")
+    .filter(line => !line.startsWith("//"))
+    .join(";").split(',').join(";")
     .match(/([a-z|A-Z|_][a-z|A-Z|0-9|_]*|;|\(|\)|\[|\]|!=|==|=|%=|>=|<=|\.\.|\.\.\.|\-\>|\*=|\+=|\*\*=|\/=|>|<|\+|\-|\/|\*|%|\*\*|!|~=|\|\||&&|(\d*[\.]?\d+)|[.]\d+)/g)
     .map(i => i.trim()).filter(i => i);
   console.log("Parsing: [" + tokens + "]");
-  ast = {};
+  var ast = {};
   ast.type = "Outer";
   parseOuter(tokens, ast);
   console.table(ast);
 
-  runData = [];
-  run_labels = [];
-  general = [
+  var runData = [];
+  var run_labels = [];
+  var general = [
   {
     "name": "Program that was run",
     "func": (val => {
@@ -819,19 +794,26 @@ function run() {
     };
   })
 
-  ctx = document.getElementById('chart').getContext('2d');
-  if (chart != null) chart.destroy();
-  chart = new Chart(ctx, {
+  let ctx = document.getElementById('chart').getContext('2d');
+  if (window.chart) {
+      window.chart.destroy();
+      window.chart = null;
+  }
+  window.chart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: run_labels,
       datasets: datasets
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: { fontSize: 16 },
       scales: {
         xAxes: [{
           display: true,
           scaleLabel: {
+            fontSize: 18,
             display: true,
             labelString: 'n'
           },
@@ -841,6 +823,7 @@ function run() {
         yAxes: [{
           display: true,
           scaleLabel: {
+            fontSize: 18,
             display: true,
             labelString: 'primitive operations'
           },
@@ -851,9 +834,8 @@ function run() {
       plugins: {
         zoom: {
           pan: {
-            enabled: true,
+            enabled: false,
             mode: 'xy',
-      
             rangeMin: {
               x: 0,
               y: 0
@@ -863,12 +845,11 @@ function run() {
               y: max
             }
           },
-      
           zoom: {
-            enabled: true,
+            enabled: false,
             drag: false,
             mode: 'y',
-      
+
             rangeMin: {
               x: 0,
               y: 0
@@ -877,7 +858,6 @@ function run() {
               x: stop,
               y: max
             },
-      
             // Speed of zoom via mouse wheel
             // (percentage of zoom on a wheel event)
             speed: 0.1
@@ -885,5 +865,5 @@ function run() {
         }
       }
     }
-});
+    });
 }
