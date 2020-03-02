@@ -1,6 +1,7 @@
 - [Introduction](_introduction)
 - [Wk01](Wk01)
 - [Wk02](Wk02)
+- [Wk03](Wk03)
 - [BigO Tool](BigOh)
 - [Valgrind and GDB Cheatsheet](gdb_valgrind)
 - [Home Computing](home_computing)
