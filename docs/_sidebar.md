@@ -3,7 +3,7 @@
 - [Wk02](Wk02)
 - [Wk03](Wk03)
 - [Wk04](Wk04)
-- []
+- [Examples of File IO](ExampleFileReading)
 - [BigO Tool](BigOh)
 - [Valgrind and GDB Cheatsheet](gdb_valgrind)
 - [Home Computing](home_computing)
