@@ -4,6 +4,7 @@
 - [Wk03](Wk03)
 - [Wk04](Wk04)
 - [Wk05](Wk05)
+- [Wk06](Wk06)
 - [TreeImplementations](TreeImplementations)
 - [Examples of File IO](ExampleFileReading)
 - [BigO Tool](BigOh)

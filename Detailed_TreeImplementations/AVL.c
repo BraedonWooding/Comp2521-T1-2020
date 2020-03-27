@@ -1,11 +1,7 @@
 #include <stdlib.h>
 
-/*
- * This is a skeleton implementation...
- * To help for the lab
- */
-
 typedef struct avl_node_t AVLNode;
+
 struct avl_node_t {
     AVLNode *left;
     AVLNode *right;
@@ -13,15 +9,11 @@ struct avl_node_t {
     // Could we also store height?
     // Yes -- it would make it faster
     // But we won't since its easy to get
-
-    // In the lab you'll have to store the height!
 };
 
 /* Instead of storing height we'll just recalculate it each time
  * of course if we want to actually reach O(log n) insertions we'll need
  * to have this be cached and only updated when necessary.
- * 
- * In the lab you won't do it this way ;)
  */
 int height(AVLNode *n) {
     if (n == NULL) {
@@ -60,8 +52,8 @@ Right Rotating at 7
 AVLNode *right_rotate(AVLNode *root) {
     AVLNode *left = root->left;
     AVLNode *left_right = left->right;
-    // 1) TODO:
-    // 2) TODO:
+    left->right = root;             // 1)
+    root->left = left_right;        // 2)
     return left;
 }
 
@@ -92,48 +84,57 @@ Left Rotating at 3
 AVLNode *left_rotate(AVLNode *root) {
     AVLNode *right = root->right;
     AVLNode *right_left = right->left;
-    // 1) TODO:
-    // 2) TODO:
+    right->left = root;             // 1)
+    root->right = right_left;       // 2)
     return right;
 }
 
 AVLNode *insert(AVLNode *root, int key) {
     // Case 1) Empty Tree
     if (root == NULL) {
-
+        root = malloc(sizeof(*root));
+        root->left = root->right = NULL;
+        root->key = key;
+        return root;
     }
 
     // Case 2) Duplicates
     if (root->key == key) {
-
+        // We can return here because we aren't going to insert
+        // So as long as tree was balanced prior it'll still be balanced
+        return root;
     } else if (key < root->key) /* Case 3) Left */ {
-
+        root->left = insert(root->left, key);
     } else /* Case 4) Right */ {
-
+        root->right = insert(root->right, key);
     }
 
     // What happens if we do height(root->right) - height(root->left)
     // Answer: The tree prefers to be more balanced on the right than on the left
-    // TODO: In the lab you'll use a different way to calculate balance won't
-    // This is taken from lecture slides mostly
     int balance = height(root->left) - height(root->right);
     if (balance > 1) {
         // Unbalanced in left
-        // What way do we rotate?? (RR vs LL)
-        // When do we need to double rotate?
+        // What way do we rotate??
+        // Which one do we need to double rotate?
         if (key < root->left->key) {
-            
-        } else /* key > root->left->key; */ {
-            
+            root = right_rotate(root);
+        } else {
+            // key > root->left->key;
+            // Need to double rotate as to move a better middle node up
+            root->left = left_rotate(root->left);
+            root = right_rotate(root);
         }
     } else if (balance < -1) {
         // Unbalanced in right
         // What way do we rotate??
         // Which one do we need to double rotate?
         if (key > root->right->key) {
-
-        } else /* key < root->right->key */ {
-
+            root = left_rotate(root);
+        } else {
+            // key < root->right->key
+            // Need to double rotate as to move a better middle node up
+            root->right = right_rotate(root->right);
+            root = left_rotate(root);
         }
     }
     return root;
