@@ -71,8 +71,6 @@ int boyer_moore(char *text, char *pattern) {
                pattern[j]);
         printLastOccurences(lastOccurences);
         printState(text, pattern, i, j);
-        printf("Press enter to continue: ");
-        getchar();
 
         numCompares++;
         if (text[i] == pattern[j]) {
@@ -83,16 +81,27 @@ int boyer_moore(char *text, char *pattern) {
                 return i;
             } else {
                 // we still have pattern to match
+                printf("Simple match of text[%d] = pattern[%d] = %c\n", i, j, text[j]);
                 i--;
                 j--;
             }
         } else {
             // failure state
             int min = 1 + lastOccurences[(int)text[i] - 'a'];
-            if (j < min) min = j;
+            if (lastOccurences[(int)text[i] - 'a'] == -1) {
+                printf("There is no occurence of %c in pattern therefore we are going to shift the pattern by %d (length of pattern)\n", text[i], strlen(pattern));
+            } else if (j < min) {
+                printf("I can't align text[%d] with pattern[%d] because then pattern will be off the left side of text so we are going to effectively just shift the pattern right\n", i, j);
+                min = j;
+            } else {
+                printf("Moving to align text[%d] = %c with pattern[%d]\n", i, text[i], lastOccurences[(int)text[i] - 'a']);
+            }
             i += strlen(pattern) - min;
             j = strlen(pattern) - 1;
         }
+
+        printf("Press enter to continue: ");
+        getchar();
     } while (i < (int)strlen(text));
     // ^^ not a very elegant way to handle size_t
     //    but our strings won't be large enough to care

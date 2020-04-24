@@ -87,8 +87,6 @@ int kmp(char *text, char *pattern) {
                pattern[j]);
         printFailure(failure, pattern);
         printState(text, pattern, i, j);
-        printf("Press enter to continue: ");
-        getchar();
         numCompares++;
 
         if (text[i] == pattern[j]) {
@@ -102,6 +100,7 @@ int kmp(char *text, char *pattern) {
                 return i - j;
             } else {
                 // we still have pattern to match
+                printf("text[%d] = pattern[%d] = %c\n", i, j, text[i]);
                 i++;
                 j++;
             }
@@ -110,11 +109,19 @@ int kmp(char *text, char *pattern) {
             if (j > 0) {
                 // we don't have to reset j all the way back
                 // since we know this F[0..F[j - 1]] will match
+                if (failure[j - 1] > 0) {
+                    printf("Failure[%d] = %d says that the prefix of pattern[%d..%d] matches suffix [%d..%d] therefore j = %d\n", j - 1, failure[j - 1], 0, failure[j - 1] - 1, j - 1 - failure[j - 1] + 1, j - 1,  failure[j - 1]);
+                } else {
+                    printf("Failure[%d] = 0 so no prefix exists so we are going to reset j to the beginning\n", j - 1);
+                }
                 j = failure[j - 1];
             } else {
+                printf("We can't move the pattern any further back so we are instead going to skip text[%d] since it won't be able to match\n", i);
                 i++;
             }
         }
+        printf("Press enter to continue: ");
+        getchar();
     };
 
     printf("Total number of comparisons is %d and build compares is % d\n ",
