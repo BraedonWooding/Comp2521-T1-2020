@@ -8,6 +8,8 @@
 - [Wk07](Wk07)
 - [Wk08](Wk08)
 - [Wk09](Wk09)
+- [Wk10](Wk10)
+- [String Algorithms](https://github.com/BraedonWooding/Comp2521-T1-2020/tree/master/StringAlgos)
 - [TreeImplementations](TreeImplementations)
 - [Examples of File IO](ExampleFileReading)
 - [BigO Tool](BigOh)
