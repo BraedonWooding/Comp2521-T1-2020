@@ -15,5 +15,6 @@
 - [BigO Tool](BigOh)
 - [Valgrind and GDB Cheatsheet](gdb_valgrind)
 - [Home Computing](home_computing)
+- [Final Exam Questions](moar_questions.md)
 - **Links**
 - [![Github](https://icongram.jgog.in/simple/github.svg?color=808080&size=16)Github](https://github.com/BraedonWooding/Comp2521-T1-2020)
