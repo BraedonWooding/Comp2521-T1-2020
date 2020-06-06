@@ -18,7 +18,7 @@ In the host name put `zID@cse.unsw.edu.au` (i.e. put your zID including the z)
 
 ### MacOS/Linux
 
-You should just be able to write `ssh zID@cse.unw.edu.au` and it should work!
+You should just be able to write `ssh zID@cse.unsw.edu.au` and it should work!
 
 If you want it to save your password so you don't have to enter it each time do the following...
 
