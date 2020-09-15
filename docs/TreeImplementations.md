@@ -1,6 +1,6 @@
 # Tree Implementations
 
-Most major trees are implemented [here]([here](https://github.com/BraedonWooding/Comp2521-T1-2020/tree/master/Detailed_TreeImplementations/))
+Most major trees are implemented [here](https://github.com/BraedonWooding/Comp2521-T1-2020/tree/master/Detailed_TreeImplementations/)
 
 I've included only an insertion and a find in most implementations.
 
